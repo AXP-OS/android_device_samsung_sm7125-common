@@ -1,0 +1,30 @@
+name: "Sync"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron:  '44 1 * * *'  # adjust if needed
+
+# Sets permissions of the GITHUB_TOKEN to allow pushing via github token
+permissions:
+  contents: write # allow git push
+
+jobs:
+  call-org-workflow:
+    name: "Calling AXP workflow"
+    uses: AXP-OS/.github/.github/workflows/sync_upstream.yml@main
+    with:
+        remote-repo: LineageOS/android_device_samsung_sm7125-common    # <- remote repo name (e.g. LineageOS/foo)
+        remote-branch: lineage-20.0 # <- remote branch name
+        local-repo: ${{ github.repository_owner }}/${{ github.event.repository.name }}
+        local-branch: "axp-a13"
+        dryrun: false  # <- set to false after a test run
+    secrets: inherit
+  keepalive-job:
+    name: Keepalive Workflow
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: gautamkrishnar/keepalive-workflow@v2
