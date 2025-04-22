@@ -230,3 +230,7 @@ WIFI_HIDL_FEATURE_AWARE := true
 WIFI_HIDL_FEATURE_DUAL_INTERFACE := true
 WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
 WPA_SUPPLICANT_VERSION := VER_0_8_X
+
+# even though we include vendor/axp/config/common.mk we need to include AXP's own BoardConfig
+# (after the above definitions & includes), too so we we can make use of the conditions within
+include vendor/axp/BoardConfigVendor.mk
